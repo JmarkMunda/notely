@@ -18,7 +18,7 @@ type Props = {
 
 const Note = ({ note }: Props) => {
   return (
-    <Card className="max-w-[400px]">
+    <Card className="w-[250px]">
       <CardHeader className="flex justify-between gap-3">
         <div className="flex flex-col">
           <p>{note.title}</p>
@@ -45,9 +45,7 @@ const Note = ({ note }: Props) => {
       </CardHeader>
       <Divider />
       <CardBody>
-        <p className="text-sm text-gray-500">
-          {note.description} adasdasdgfdsgdfghdfg dfgfdg fdsg
-        </p>
+        <p className="text-sm text-gray-500">{note.description}</p>
       </CardBody>
       <Divider />
       <CardFooter>

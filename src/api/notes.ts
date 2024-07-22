@@ -1,4 +1,5 @@
 import axiosInstance from "../config/axios";
+import { NoteType } from "../utils/types";
 
 export const getAllNotes = async () => {
   try {
@@ -7,5 +8,18 @@ export const getAllNotes = async () => {
     return data;
   } catch (error) {
     console.log("Error getAllNotes: ", error);
+  }
+};
+
+export const addNote = async (
+  formData: Pick<NoteType, "title" | "description" | "user_id">
+) => {
+  try {
+    const res = await axiosInstance.post("/notes/add", formData);
+    const data = await res.data;
+    return data;
+  } catch (error: any) {
+    console.log("Error adding a note: ", error);
+    return error.response.data;
   }
 };
