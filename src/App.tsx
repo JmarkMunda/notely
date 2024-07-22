@@ -1,13 +1,13 @@
 import AddNote from "./components/AddNote";
 import Header from "./components/Header";
-import Notes from "./components/Notes";
+import NotesList from "./components/NotesList";
 
 function App() {
   return (
     <div className="p-8">
       <Header />
       <AddNote />
-      <Notes />
+      <NotesList />
     </div>
   );
 }
