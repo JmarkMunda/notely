@@ -1,5 +1,4 @@
 import { useDisclosure } from "@nextui-org/modal";
-import AddEditNoteModal from "./components/AddEditNoteModal";
 import Header from "./components/Header";
 import NotesList from "./components/NotesList";
 import { Button } from "@nextui-org/button";
@@ -8,11 +7,14 @@ import { useCallback, useEffect, useState } from "react";
 import { getAllNotes } from "./api/notes";
 import SearchBar from "./components/SearchBar";
 import { IoMdAdd, IoIosSearch } from "react-icons/io";
+import AddEditNoteModal from "./components/AddEditNoteModal";
 
 function App() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const [notes, setNotes] = useState<NoteType[]>([]);
   const [searchInput, setSearchInput] = useState("");
+  const [mode, setMode] = useState<"add" | "edit">("add");
+  const [currentNote, setCurrentNote] = useState<NoteType | null>(null);
 
   const fetchAllNotes = useCallback(async () => {
     try {
@@ -27,6 +29,21 @@ function App() {
     fetchAllNotes();
   }, [fetchAllNotes]);
 
+  const handleAddModalOpen = () => {
+    setMode("add");
+    onOpen();
+  };
+
+  const handleEditNote = (note: NoteType) => {
+    setMode("edit");
+    setCurrentNote(note);
+    onOpen();
+  };
+
+  const handleDeleteNote = (id: string) => {
+    console.log(id);
+  };
+
   return (
     <div className="p-8">
       <Header />
@@ -39,15 +56,21 @@ function App() {
         startContent={<IoIosSearch />}
       />
 
-      <Button onPress={onOpen} color="primary">
+      <Button onPress={handleAddModalOpen} color="primary">
         <IoMdAdd />
         Add note
       </Button>
 
-      <NotesList notes={notes} />
+      <NotesList
+        notes={notes}
+        handleEditNote={handleEditNote}
+        handleDeleteNote={handleDeleteNote}
+      />
 
       {/* MODAL */}
       <AddEditNoteModal
+        mode={mode}
+        note={currentNote}
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         onClose={onClose}

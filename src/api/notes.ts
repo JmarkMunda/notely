@@ -23,3 +23,17 @@ export const addNote = async (
     return error.response.data;
   }
 };
+
+export const editNote = async (
+  id: string,
+  formData: Pick<NoteType, "title" | "description" | "user_id">
+) => {
+  try {
+    const res = await axiosInstance.patch(`/notes/${id}`, formData);
+    const data = await res.data;
+    return data;
+  } catch (error: any) {
+    console.log("Error editing a note: ", error);
+    return error.response.data;
+  }
+};

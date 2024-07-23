@@ -14,9 +14,11 @@ import moment from "moment";
 
 type Props = {
   note: NoteType;
+  handleEditNote: (id: NoteType) => void;
+  handleDeleteNote: (id: string) => void;
 };
 
-const Note = ({ note }: Props) => {
+const Note = ({ note, handleEditNote, handleDeleteNote }: Props) => {
   return (
     <Card className="w-[250px]">
       <CardHeader className="flex justify-between gap-3">
@@ -30,14 +32,18 @@ const Note = ({ note }: Props) => {
             </button>
           </DropdownTrigger>
           <DropdownMenu aria-label="Static Actions">
-            <DropdownItem key="edit" startContent={<AiOutlineEdit />}>
+            <DropdownItem
+              key="edit"
+              startContent={<AiOutlineEdit />}
+              onClick={() => handleEditNote(note)}>
               Edit Note
             </DropdownItem>
             <DropdownItem
               key="delete"
               className="text-danger"
               color="danger"
-              startContent={<MdDelete />}>
+              startContent={<MdDelete />}
+              onClick={() => handleDeleteNote(note.id)}>
               Delete Note
             </DropdownItem>
           </DropdownMenu>

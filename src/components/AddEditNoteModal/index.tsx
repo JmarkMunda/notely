@@ -7,18 +7,14 @@ import {
   ModalHeader,
 } from "@nextui-org/modal";
 import { Button } from "@nextui-org/react";
-import { useState } from "react";
-import { addNote } from "../api/notes";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-
-type Props = {
-  isOpen: boolean;
-  onOpenChange: () => void;
-  onClose: () => void;
-  refresh: () => void;
-};
+import { Props } from "./types";
+import { addNote, editNote } from "../../api/notes";
 
 const AddEditNoteModal = ({
+  mode,
+  note,
   isOpen,
   onOpenChange,
   onClose,
@@ -26,7 +22,19 @@ const AddEditNoteModal = ({
 }: Props) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    if (mode === "edit") {
+      setTitle(note!.title);
+      setDescription(note!.description);
+    } else {
+      setTitle("");
+      setDescription("");
+    }
+  }, [mode, note]);
+
+  // HANDLERS
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   };
@@ -41,17 +49,40 @@ const AddEditNoteModal = ({
   };
 
   const handleSubmit = async () => {
-    const res = await addNote({ user_id: "1", title, description });
-
-    if (res.statusCode !== 0) {
-      toast.success(res.message);
-      refresh();
+    setLoading(true);
+    let response;
+    if (mode === "add") {
+      response = await addNote({ user_id: "1", title, description });
     } else {
-      toast.error(res.message);
+      response = await editNote(note!.id, {
+        user_id: note!.user_id,
+        title,
+        description,
+      });
     }
 
+    if (response.statusCode !== 0) {
+      toast.success(response.message);
+      refresh();
+    } else {
+      toast.error(response.message);
+    }
+
+    setLoading(false);
     onClose();
     handleReset();
+  };
+
+  // UI LOGIC
+  const getModalTitle = () => (mode === "add" ? "Add a note" : "Edit note");
+
+  const getSubmitButtonText = () => {
+    switch (mode) {
+      case "add":
+        return loading ? "Adding" : "Add";
+      case "edit":
+        return loading ? "Updating" : "Update";
+    }
   };
 
   return (
@@ -63,7 +94,9 @@ const AddEditNoteModal = ({
       backdrop="opaque">
       <ModalContent>
         <>
-          <ModalHeader className="flex flex-col gap-1">Add a note</ModalHeader>
+          <ModalHeader className="flex flex-col gap-1">
+            {getModalTitle()}
+          </ModalHeader>
           <ModalBody>
             <Input
               autoFocus
@@ -80,8 +113,12 @@ const AddEditNoteModal = ({
             />
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onPress={handleSubmit}>
-              Submit
+            <Button
+              color="primary"
+              onPress={handleSubmit}
+              isLoading={loading}
+              disabled={loading}>
+              {getSubmitButtonText()}
             </Button>
           </ModalFooter>
         </>
