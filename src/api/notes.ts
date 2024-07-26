@@ -37,3 +37,15 @@ export const editNote = async (
     return error.response.data;
   }
 };
+
+export const deleteNote = async (id: string) => {
+  try {
+    const res = await axiosInstance.delete(`/notes/${id}`);
+    const data = await res.data;
+    console.log("Returned from delete request: ", data);
+    return data;
+  } catch (error: any) {
+    console.log("Error deleting a note: ", error);
+    return error.response.data;
+  }
+};

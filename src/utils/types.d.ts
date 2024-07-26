@@ -3,6 +3,6 @@ export type NoteType = {
   title: string;
   description: string;
   user_id: string;
-  createdat: Date;
-  updatedat: Date;
+  created_at: Date;
+  updated_at: Date;
 };

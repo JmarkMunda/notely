@@ -1,13 +1,16 @@
 import { useDisclosure } from "@nextui-org/modal";
-import Header from "./components/Header";
-import NotesList from "./components/NotesList";
-import { Button } from "@nextui-org/button";
 import { NoteType } from "./utils/types";
 import { useCallback, useEffect, useState } from "react";
-import { getAllNotes } from "./api/notes";
+import { IoIosSearch } from "react-icons/io";
+import { toast } from "react-toastify";
+import { categories } from "./utils/constants";
+import { deleteNote, getAllNotes } from "./api/notes";
+import Header from "./components/Header";
+import NotesList from "./components/NotesList";
 import SearchBar from "./components/SearchBar";
-import { IoMdAdd, IoIosSearch } from "react-icons/io";
 import AddEditNoteModal from "./components/AddEditNoteModal";
+import Fab from "./components/Fab";
+import Categories from "./components/Categories";
 
 function App() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
@@ -15,6 +18,7 @@ function App() {
   const [searchInput, setSearchInput] = useState("");
   const [mode, setMode] = useState<"add" | "edit">("add");
   const [currentNote, setCurrentNote] = useState<NoteType | null>(null);
+  const [activeCategory, setActiveCategory] = useState("All");
 
   const fetchAllNotes = useCallback(async () => {
     try {
@@ -40,12 +44,22 @@ function App() {
     onOpen();
   };
 
-  const handleDeleteNote = (id: string) => {
-    console.log(id);
+  const handleDeleteNote = async (id: string) => {
+    try {
+      await deleteNote(id);
+      toast.success("Deleted");
+      fetchAllNotes();
+    } catch (error) {
+      console.log("Error handleDeleteNote: ", error);
+    }
+  };
+
+  const handleCategoryClick = (category: string) => {
+    setActiveCategory(category);
   };
 
   return (
-    <div className="p-8">
+    <div className="py-8 px-8 lg:px-14 md:px-10">
       <Header />
 
       <SearchBar
@@ -56,16 +70,26 @@ function App() {
         startContent={<IoIosSearch />}
       />
 
-      <Button onPress={handleAddModalOpen} color="primary">
-        <IoMdAdd />
-        Add note
-      </Button>
+      <div className="items-center">
+        {/* NOTES BUTTON */}
+        <p className="text-lg font-bold mb-2 mt-4">Your Notes</p>
+
+        {/* CATEGORIES BUTTONS */}
+        <Categories
+          categories={categories}
+          selectedCategory={activeCategory}
+          onItemClick={handleCategoryClick}
+        />
+      </div>
 
       <NotesList
         notes={notes}
         handleEditNote={handleEditNote}
         handleDeleteNote={handleDeleteNote}
       />
+
+      {/* FAB */}
+      <Fab title="Add Note" onClick={handleAddModalOpen} />
 
       {/* MODAL */}
       <AddEditNoteModal

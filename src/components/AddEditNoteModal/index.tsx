@@ -11,6 +11,8 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Props } from "./types";
 import { addNote, editNote } from "../../api/notes";
+import CategoriesDropdown from "../CategoriesDropdown";
+import { categories } from "../../utils/constants";
 
 const AddEditNoteModal = ({
   mode,
@@ -42,6 +44,8 @@ const AddEditNoteModal = ({
   const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDescription(e.target.value);
   };
+
+  const handleSelectCategory = (category: string) => {};
 
   const handleReset = () => {
     setTitle("");
@@ -110,6 +114,12 @@ const AddEditNoteModal = ({
               variant="bordered"
               value={description}
               onChange={handleDescriptionChange}
+            />
+
+            <CategoriesDropdown
+              label="Category"
+              categories={categories}
+              onItemClick={handleSelectCategory}
             />
           </ModalBody>
           <ModalFooter>

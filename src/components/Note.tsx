@@ -1,6 +1,5 @@
 import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/card";
 import { NoteType } from "../utils/types";
-import { Divider } from "@nextui-org/divider";
 import { HiDotsVertical } from "react-icons/hi";
 import {
   Dropdown,
@@ -21,9 +20,9 @@ type Props = {
 const Note = ({ note, handleEditNote, handleDeleteNote }: Props) => {
   return (
     <Card className="w-[250px]">
-      <CardHeader className="flex justify-between gap-3">
-        <div className="flex flex-col">
-          <p>{note.title}</p>
+      <CardHeader className="flex justify-between">
+        <div className="bg-green-200 px-4 py-1 rounded-full">
+          <p className="text-xs font-semibold">Work</p>
         </div>
         <Dropdown>
           <DropdownTrigger>
@@ -49,14 +48,16 @@ const Note = ({ note, handleEditNote, handleDeleteNote }: Props) => {
           </DropdownMenu>
         </Dropdown>
       </CardHeader>
-      <Divider />
+
       <CardBody>
+        <p className="font-bold">{note.title}</p>
+
         <p className="text-sm text-gray-500">{note.description}</p>
       </CardBody>
-      <Divider />
-      <CardFooter>
+
+      <CardFooter className="justify-end px-4">
         <p className="text-xs text-gray-500">
-          {moment(note.createdat).fromNow()}
+          {moment(note.created_at).format("lll")}
         </p>
       </CardFooter>
     </Card>
