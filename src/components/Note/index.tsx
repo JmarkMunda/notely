@@ -24,7 +24,7 @@ const Note = ({ note, handleEditNote, handleDeleteNote }: Props) => {
       <CardHeader className="flex justify-between">
         <div className={`${getBadgeColor()} px-4 py-1 rounded-full`}>
           <p className="text-xs font-semibold text-white">
-            {note.category[0].toUpperCase() + note.category.slice(1) ||
+            {note?.category[0]?.toUpperCase() + note?.category?.slice(1) ||
               "Others"}
           </p>
         </div>

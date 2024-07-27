@@ -2,7 +2,7 @@ import Note from "../Note";
 import { Props } from "./types";
 
 const NotesList = ({ notes, handleEditNote, handleDeleteNote }: Props) => {
-  if (notes.length === 0)
+  if (notes?.length === 0)
     return (
       <div className="flex flex-col flex-1 justify-center items-center my-10">
         <img
