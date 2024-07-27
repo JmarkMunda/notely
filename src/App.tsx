@@ -46,7 +46,7 @@ function App() {
       <div className="items-center">
         {/* NOTES BUTTON */}
         <p className="text-lg font-bold mb-2 mt-4">Your Notes</p>
-        <div className="flex flex-1 justify-between">
+        <div className="flex flex-col flex-1 justify-between sm:flex-row">
           {/* CATEGORIES BUTTONS */}
           <Categories
             categories={categories}

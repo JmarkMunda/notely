@@ -3,7 +3,7 @@ import { Props } from "./types";
 
 const Categories = ({ categories, selectedCategory, onItemClick }: Props) => {
   return (
-    <div className="flex flex-row items-center gap-2 overflow-auto">
+    <div className="flex flex-row items-center gap-2 py-4 overflow-auto">
       <Chip
         variant={!selectedCategory ? "solid" : "bordered"}
         className={`cursor-pointer text-gray-500 ${

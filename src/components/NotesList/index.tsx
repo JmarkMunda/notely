@@ -19,7 +19,7 @@ const NotesList = ({ notes, handleEditNote, handleDeleteNote }: Props) => {
     );
 
   return (
-    <div className="flex gap-4 my-8 flex-wrap">
+    <div className="flex gap-4 my-8 flex-wrap justify-center sm:justify-start">
       {notes.map((note) => (
         <Note
           key={note.id}

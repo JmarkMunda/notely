@@ -97,7 +97,7 @@ const AddEditNoteModal = ({
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       onClose={handleReset}
-      placement="top-center"
+      placement="center"
       backdrop="opaque">
       <ModalContent>
         <>
