@@ -1,9 +1,15 @@
 import axiosInstance from "../config/axios";
 import { NoteType } from "../utils/types";
 
-export const getAllNotes = async () => {
+export const getAllNotes = async (
+  search: string,
+  order: string,
+  category: string
+) => {
   try {
-    const res = await axiosInstance.get("/notes");
+    const res = await axiosInstance.get(
+      `/notes?category=${category}&search=${search}&order=${order}`
+    );
     const { data } = await res.data;
     return data;
   } catch (error) {
@@ -12,7 +18,7 @@ export const getAllNotes = async () => {
 };
 
 export const addNote = async (
-  formData: Pick<NoteType, "title" | "description" | "user_id">
+  formData: Pick<NoteType, "title" | "description" | "category">
 ) => {
   try {
     const res = await axiosInstance.post("/notes/add", formData);
@@ -26,7 +32,7 @@ export const addNote = async (
 
 export const editNote = async (
   id: string,
-  formData: Pick<NoteType, "title" | "description" | "user_id">
+  formData: Pick<NoteType, "title" | "description" | "category">
 ) => {
   try {
     const res = await axiosInstance.patch(`/notes/${id}`, formData);

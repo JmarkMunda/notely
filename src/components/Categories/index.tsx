@@ -5,21 +5,20 @@ const Categories = ({ categories, selectedCategory, onItemClick }: Props) => {
   return (
     <div className="flex flex-row items-center gap-2 overflow-auto">
       <Chip
-        variant={selectedCategory === "All" ? "solid" : "bordered"}
+        variant={!selectedCategory ? "solid" : "bordered"}
         className={`cursor-pointer text-gray-500 ${
-          selectedCategory === "All" && "bg-blue-500 text-white"
+          !selectedCategory && "bg-blue-500 text-white"
         }`}
-        onClick={() => onItemClick("All")}>
+        onClick={() => onItemClick("")}>
         All
       </Chip>
       {categories.map((category) => (
         <Chip
-          variant={selectedCategory === category.label ? "solid" : "bordered"}
+          variant={selectedCategory === category.key ? "solid" : "bordered"}
           key={category.key}
-          onClick={() => onItemClick(category.label)}
+          onClick={() => onItemClick(category.key)}
           className={`cursor-pointer text-gray-500 ${
-            selectedCategory === category.label &&
-            `${category.color} text-white`
+            selectedCategory === category.key && `${category.color} text-white`
           }`}>
           {category.label}
         </Chip>

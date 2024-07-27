@@ -24,12 +24,14 @@ const AddEditNoteModal = ({
 }: Props) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (mode === "edit") {
       setTitle(note!.title);
       setDescription(note!.description);
+      setCategory(note!.category);
     } else {
       setTitle("");
       setDescription("");
@@ -45,36 +47,37 @@ const AddEditNoteModal = ({
     setDescription(e.target.value);
   };
 
-  const handleSelectCategory = (category: string) => {};
+  const handleSelectCategory = (category: string) => setCategory(category);
 
   const handleReset = () => {
     setTitle("");
     setDescription("");
+    setCategory("");
   };
 
+  // Perform API Request after submit
   const handleSubmit = async () => {
     setLoading(true);
     let response;
     if (mode === "add") {
-      response = await addNote({ user_id: "1", title, description });
+      response = await addNote({ title, description, category });
     } else {
       response = await editNote(note!.id, {
-        user_id: note!.user_id,
         title,
         description,
+        category,
       });
     }
 
     if (response.statusCode !== 0) {
       toast.success(response.message);
       refresh();
+      onClose();
+      handleReset();
     } else {
       toast.error(response.message);
     }
-
     setLoading(false);
-    onClose();
-    handleReset();
   };
 
   // UI LOGIC
@@ -119,6 +122,7 @@ const AddEditNoteModal = ({
             <CategoriesDropdown
               label="Category"
               categories={categories}
+              selectedCategory={category}
               onItemClick={handleSelectCategory}
             />
           </ModalBody>

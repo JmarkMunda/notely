@@ -4,15 +4,20 @@ import { Props } from "./types";
 const CategoriesDropdown = ({
   label,
   categories,
+  selectedCategory,
   onItemClick,
   ...props
 }: Props) => {
   return (
-    <Select label={label} variant="bordered" {...props}>
+    <Select
+      label={label}
+      variant="bordered"
+      selectedKeys={[selectedCategory]}
+      {...props}>
       {categories.map((category) => (
         <SelectItem
           key={category.key}
-          onClick={() => onItemClick(category.label)}>
+          onClick={() => onItemClick(category.key)}>
           {category.label}
         </SelectItem>
       ))}

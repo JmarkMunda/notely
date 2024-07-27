@@ -1,5 +1,5 @@
+import moment from "moment";
 import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/card";
-import { NoteType } from "../utils/types";
 import { HiDotsVertical } from "react-icons/hi";
 import {
   Dropdown,
@@ -9,20 +9,24 @@ import {
 } from "@nextui-org/dropdown";
 import { MdDelete } from "react-icons/md";
 import { AiOutlineEdit } from "react-icons/ai";
-import moment from "moment";
-
-type Props = {
-  note: NoteType;
-  handleEditNote: (id: NoteType) => void;
-  handleDeleteNote: (id: string) => void;
-};
+import { categories } from "../../utils/constants";
+import { useCallback } from "react";
+import { Props } from "./types";
 
 const Note = ({ note, handleEditNote, handleDeleteNote }: Props) => {
+  const getBadgeColor = useCallback(() => {
+    const index = categories.findIndex(({ key }) => key === note.category);
+    return categories[index]?.color;
+  }, [note.category]);
+
   return (
     <Card className="w-[250px]">
       <CardHeader className="flex justify-between">
-        <div className="bg-green-200 px-4 py-1 rounded-full">
-          <p className="text-xs font-semibold">Work</p>
+        <div className={`${getBadgeColor()} px-4 py-1 rounded-full`}>
+          <p className="text-xs font-semibold text-white">
+            {note.category[0].toUpperCase() + note.category.slice(1) ||
+              "Others"}
+          </p>
         </div>
         <Dropdown>
           <DropdownTrigger>
