@@ -12,11 +12,12 @@ import { AiOutlineEdit } from "react-icons/ai";
 import { categories } from "../../utils/constants";
 import { useCallback } from "react";
 import { Props } from "./types";
+import { capitalize } from "../../utils/helper";
 
 const Note = ({ note, handleEditNote, handleDeleteNote }: Props) => {
   const getBadgeColor = useCallback(() => {
     const index = categories.findIndex(({ key }) => key === note.category);
-    return categories[index]?.color;
+    return categories[index]?.color ?? "bg-gray-500";
   }, [note.category]);
 
   return (
@@ -24,8 +25,7 @@ const Note = ({ note, handleEditNote, handleDeleteNote }: Props) => {
       <CardHeader className="flex justify-between">
         <div className={`${getBadgeColor()} px-4 py-1 rounded-full`}>
           <p className="text-xs font-semibold text-white">
-            {note?.category[0]?.toUpperCase() + note?.category?.slice(1) ||
-              "Others"}
+            {capitalize(note.category) || "Others"}
           </p>
         </div>
         <Dropdown>
